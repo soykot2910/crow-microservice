@@ -1,0 +1,2173 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "MetaTrader microservice. Call /init/ to get token, which is required in other methods.",
+    "version": "1.0.0",
+    "title": "MetaTrader microservice",
+    "contact": {
+      "email": "tanzimfahim@gmail.com"
+    },
+    "license": {
+      "name": "Commerce",
+      "url": "https://tanzim.me"
+    }
+  },
+  "host": "10.150.30.131:6502",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "report",
+      "description": "Complex report"
+    },
+    {
+      "name": "trade",
+      "description": "Trade"
+    },
+    {
+      "name": "user",
+      "description": "MetaTrader User"
+    },
+    {
+      "name": "group",
+      "description": "User Group"
+    },
+    {
+      "name": "symbol",
+      "description": "Market Symbol"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/init/": {
+      "get": {
+        "summary": "Init manager",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "server",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "MetaTrader server IP with port. Example: 127.0.0.1:443"
+          },
+          {
+            "name": "login",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "MetaTrader manager login"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "MetaTrader manager password"
+          },
+          {
+            "name": "ping_seconds",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "description": "Ping every. Default is 30 seconds"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/InitReturnType"
+            }
+          },
+          "400": {
+            "description": "Somthing wrong. Check response body"
+          }
+        }
+      }
+    },
+    "/ping/": {
+      "get": {
+        "summary": "Ping manager",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          },
+          "400": {
+            "description": "Somthing wrong. Check response body"
+          }
+        }
+      }
+    },
+    "/trades/online/{user_login}": {
+      "get": {
+        "tags": [
+          "trade",
+          "online"
+        ],
+        "summary": "Get list of live trades for the user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user_login",
+            "in": "path",
+            "description": "The login that needs to be fetched for.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfTrades"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/trades/history/{user_login}": {
+      "get": {
+        "tags": [
+          "trade"
+        ],
+        "summary": "Get list of history trades for the user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user_login",
+            "in": "path",
+            "description": "The login that needs to be fetched for.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Date From, Example: \"from\"=\"2019.02.12 00:00\"",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Date To, Example: \"to\"=\"2019.02.12 00:00\". If empty current time is used.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "days_back",
+            "in": "query",
+            "description": "Check \"days_back\" Days from To Date",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "types",
+            "in": "query",
+            "description": "Trade Types, Example: \"types\"=\"0,1\", will return all buy and sell trades",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfTrades"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/journal/history": {
+      "get": {
+        "tags": [
+          "journal"
+        ],
+        "summary": "Get list of journal records",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "description": "Mode.",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Date From, Example: \"from\"=\"2019.02.12 00:00\"",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Date To, Example: \"to\"=\"2019.02.12 00:00\". If empty current time is used.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfJournalRecords"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/users/report": {
+      "post": {
+        "tags": [
+          "old"
+        ],
+        "summary": "Get list of user trades for specified logins",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{ \"logins\":[123],\"from\": \"2019.02.12 00:00\", \"to\":\"2019.04.14 00:00\", \"types\": \"6,7\"}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserTradesFilterType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfTrades"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/trades/report": {
+      "post": {
+        "tags": [
+          "old"
+        ],
+        "summary": "Get trade details for specified closed orders",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{ \"orders\":[123]}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReportTradesFilterType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfTrades"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+
+    "/report/trades": {
+      "post": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Get trade details for specified closed orders",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{ \"orders\":[123]}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReportTradesFilterType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfTrades"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/trade/open": {
+      "post": {
+        "tags": [
+          "trade"
+        ],
+        "summary": "Open order",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{ \"login\": 37011, \"cmd\": 0,\"lots\":0.01,\"symbol\":\"EURUSD\", \"price\":1.3456, \"sl\":0,\"tp\":0}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OpenTradeFilterType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TradeType"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/trade/update": {
+      "post": {
+        "tags": [
+          "trade"
+        ],
+        "summary": "Update order",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{ \"ticket\": 12344, \"login\": 123121, \"sl\":0,\"tp\":0, \"price\": 1.1111}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyTradeFilterType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TradeType"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/trades/cancel": {
+      "post": {
+        "tags": [
+          "trade"
+        ],
+        "summary": "Cancel pending order",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{ \"ticket\": 12344}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CancelTradeFilterType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TradeType"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/trades/close": {
+      "post": {
+        "tags": [
+          "trade"
+        ],
+        "summary": "Close order",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{ \"ticket\": 12344, \"lots\":100, \"price\":1.4567}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CloseTradeFilterType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/TradeType"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/symbols/": {
+      "get": {
+        "tags": [
+          "symbol"
+        ],
+        "summary": "Get list of market symbols",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfSymbols"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/symbol/update": {
+      "post": {
+        "tags": [
+          "symbol"
+        ],
+        "summary": "Update symbol",
+        "operationId": "updateSymbol",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{\"symbol\": \"EURUSD\", \"swap_long\":1.1, \"swap_short\":1.2}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Symbol"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/groups/": {
+      "get": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Get list of groups",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfGroups"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/group/{group_name}": {
+      "get": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Get group by name",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "group_name",
+            "in": "path",
+            "description": "The name that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/symgroups/": {
+      "get": {
+        "tags": [
+          "symbol"
+        ],
+        "summary": "Get list of symbol groups",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfSymGroups"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get list of all users",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfLogins"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/users/online": {
+      "get": {
+        "tags": [
+          "user",
+          "online"
+        ],
+        "summary": "Get list of online users",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfOnlineUsers"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/user/{user_login}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user by user login",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user_login",
+            "in": "path",
+            "description": "The name that needs to be fetched. Use 3 for testing. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete user",
+        "operationId": "deleteUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user_login",
+            "in": "path",
+            "description": "The login that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/user/margin/{user_login}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get margin by user login",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user_login",
+            "in": "path",
+            "description": "The name that needs to be fetched. Use 3 for testing. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Margin"
+            }
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/user/add": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{\"login\": 1, \"password\":\"pwd\", \"name\":\"name\", \"email\": \"1@1.com\"}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/user/auth": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user by credentials",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{\"login\": 1, \"password\":\"pwd\"}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserAuth"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/users/bulk_add": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create users",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{\"groupname\":\"demohfx-usd\",\"password\":\"123456Aa\", \"firstname\":\"test\", \"firstname\":\"test\", \"email\": \"test@test.com\"}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfUserResponses"
+            }
+
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/user/update": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update user",
+        "operationId": "updateUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{\"login\": 1, \"password\":\"new_pwd\", \"name\":\"new_name\"}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/user/check": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Check user exists",
+        "operationId": "checkUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{\"login\": 1, \"password\":\"pwd\"}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserAuth"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/user/deposit": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Deposit account",
+        "consumes": [
+          "application/json"
+        ],
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{\"login\": 1, \"amount\":1, \"is_credit\": true, \"comment\": \"F.Management\"}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BalanceType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/user/withdraw": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Withdraw account",
+        "description": "Withdraw account",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{\"login\": 1, \"amount\":1, \"is_credit\": true, \"check_free_margin\": false, \"comment\": \"F.Management\"}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BalanceType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    },
+    "/user/reset_pwd": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Reset password",
+        "description": "Reset password",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Session token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "{\"login\": 1, \"password\":\"new_pwd\", \"change_investor\":0}",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResetPwdType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Something is wrong, check response body",
+            "schema": {
+              "$ref": "#/definitions/ReturnType"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Margin": {
+      "type": "object",
+      "properties": {
+        "balance": {
+          "type": "number"
+        },
+        "equity": {
+          "type": "number"
+        },
+        "group": {
+          "type": "string"
+        },
+        "level_type": {
+          "type": "integer"
+        },
+        "leverage": {
+          "type": "integer"
+        },
+        "margin": {
+          "type": "number"
+        },
+        "margin_free": {
+          "type": "number"
+        },
+        "margin_level": {
+          "type": "number"
+        },
+        "margin_type": {
+          "type": "integer"
+        },
+        "volume": {
+          "type": "integer"
+        }
+      }
+    },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "zipcode": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "agent_account": {
+          "type": "integer"
+        },
+        "id_number": {
+          "type": "string"
+        },
+        "leverage": {
+          "type": "integer"
+        },
+        "enabled": {
+          "type": "integer"
+        },
+        "enable_change_password": {
+          "type": "integer"
+        },
+        "send_report": {
+          "type": "integer"
+        },
+        "read_only": {
+          "type": "integer"
+        },
+        "margin": {
+          "type": "object",
+          "properties": {
+            "balance": {
+              "type": "number"
+            },
+            "equity": {
+              "type": "number"
+            },
+            "group": {
+              "type": "string"
+            },
+            "level_type": {
+              "type": "integer"
+            },
+            "leverage": {
+              "type": "integer"
+            },
+            "margin": {
+              "type": "number"
+            },
+            "margin_free": {
+              "type": "number"
+            },
+            "margin_level": {
+              "type": "number"
+            },
+            "margin_type": {
+              "type": "integer"
+            },
+            "volume": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "UserResponse"
+      }
+    },
+    "User": {
+      "type": "object",
+      "required": [
+        "login"
+      ],
+      "properties": {
+        "login": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "agent_account": {
+          "type": "integer"
+        },
+        "id_number": {
+          "type": "string"
+        },
+        "zipcode": {
+          "type": "string"
+        },
+        "leverage": {
+          "type": "integer"
+        },
+        "enabled": {
+          "type": "integer"
+        },
+        "enable_change_password": {
+          "type": "integer"
+        },
+        "send_report": {
+          "type": "integer"
+        },
+        "read_only": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Group": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "default_leverage": {
+          "type": "integer"
+        },
+        "securities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "trade": {
+                "type": "integer"
+              },
+              "execution": {
+                "type": "integer"
+              },
+              "comm_base": {
+                "type": "number"
+              },
+              "comm_type": {
+                "type": "number"
+              },
+              "comm_lots": {
+                "type": "number"
+              },
+              "comm_agent": {
+                "type": "number"
+              },
+              "comm_agent_type": {
+                "type": "integer"
+              },
+              "spread_diff": {
+                "type": "integer"
+              },
+              "lot_min": {
+                "type": "integer"
+              },
+              "lot_max": {
+                "type": "integer"
+              },
+              "lot_step": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "Group"
+      }
+    },
+    "Symbol": {
+      "type": "object",
+      "required": [
+        "symbol"
+      ],
+      "properties": {
+        "symbol": {
+          "type": "string"
+        },
+        "swap_long": {
+          "type": "number"
+        },
+        "swap_short": {
+          "type": "number"
+        }
+      },
+      "xml": {
+        "name": "Symbol"
+      }
+    },
+    "Users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "groupname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "phonenumber": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "countrycode": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "UserAuth": {
+      "type": "object",
+      "required": [
+        "login",
+        "password"
+      ],
+      "properties": {
+        "login": {
+          "type": "integer",
+          "example": 1
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "UserAuth"
+      }
+    },
+    "UserTradesFilterType": {
+      "type": "object",
+      "properties": {
+        "logins": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "example": [ 37011 ]
+        },
+        "from": {
+          "type": "string",
+          "example": "2019.02.12 00:00"
+        },
+        "to": {
+          "type": "string",
+          "example": "2019.04.12 00:00"
+        },
+        "types": {
+          "type": "string",
+          "example": "0,1"
+        }
+      }
+    },
+    "TradesFilterType": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "example": "2019.02.12 00:00"
+        },
+        "to": {
+          "type": "string",
+          "example": "2019.04.12 00:00"
+        },
+        "types": {
+          "type": "string",
+          "example": "0,1"
+        }
+      }
+    },
+    "ReportTradesFilterType": {
+      "type": "object",
+      "properties": {
+        "orders": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "example": [ 1234 ]
+        }
+      }
+    },
+    "OpenTradeFilterType": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "integer",
+          "example": 1
+        },
+        "price": {
+          "type": "number",
+          "example": 1.12345
+        },
+        "cmd": {
+          "type": "number",
+          "example": 0
+        },
+        "lots": {
+          "type": "number",
+          "example": 0.01
+        },
+        "sl": {
+          "type": "number",
+          "example": 0
+        },
+        "tp": {
+          "type": "number",
+          "example": 0
+        },
+        "symbol": {
+          "type": "string",
+          "example": "EURUSD"
+        },
+        "comment": {
+          "type": "string",
+          "example": "new order"
+        }
+      }
+    },
+    "ModifyTradeFilterType": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "integer",
+          "example": 1
+        },
+        "ticket": {
+          "type": "integer",
+          "example": 1
+        },
+        "price": {
+          "type": "number",
+          "example": 0
+        },
+        "sl": {
+          "type": "number",
+          "example": 0
+        },
+        "tp": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "CloseTradeFilterType": {
+      "type": "object",
+      "properties": {
+        "ticket": {
+          "type": "integer",
+          "example": 1
+        },
+        "lots": {
+          "type": "integer",
+          "example": 0
+        },
+        "price": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "CancelTradeFilterType": {
+      "type": "object",
+      "properties": {
+        "ticket": {
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
+    "ResetPwdType": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "password": {
+          "type": "string",
+          "example": "1234aa"
+        },
+        "change_investor": {
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
+    "ReturnType": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": 401
+        },
+        "message": {
+          "type": "string",
+          "example": "Failed to connect to server"
+        }
+      }
+    },
+    "InitReturnType": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "token": {
+          "type": "string",
+          "example": "252"
+        }
+      }
+    },
+    "BalanceType": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "integer",
+          "example": 1
+        },
+        "amount": {
+          "type": "number",
+          "example": 1
+        },
+        "is_credit": {
+          "type": "boolean",
+          "example": false
+        },
+        "comment": {
+          "type": "string",
+          "example": "Deposit/Withdraw"
+        },
+        "check_free_margin": {
+          "type": "boolean",
+          "example": false
+        }
+      }
+    },
+    "TradeType": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "integer"
+        },
+        "symbol": {
+          "type": "string",
+          "example": "EURUSD"
+        },
+        "state": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "type_str": {
+          "type": "string",
+          "example": "sell"
+        },
+        "ticket": {
+          "type": "integer"
+        },
+        "login": {
+          "type": "integer"
+        },
+        "profit": {
+          "type": "number",
+          "example": 10000.00
+        },
+        "digits": {
+          "type": "integer"
+        },
+        "sl": {
+          "type": "number"
+        },
+        "tp": {
+          "type": "number"
+        },
+        "pips": {
+          "type": "number"
+        },
+        "volume": {
+          "type": "integer"
+        },
+        "lots": {
+          "type": "number"
+        },
+        "swap": {
+          "type": "number"
+        },
+        "commission": {
+          "type": "number"
+        },
+        "open_price": {
+          "type": "number"
+        },
+        "close_price": {
+          "type": "number"
+        },
+        "open_time": {
+          "type": "integer"
+        },
+        "close_time": {
+          "type": "integer"
+        },
+        "open_time_str": {
+          "type": "string"
+        },
+        "close_time_str": {
+          "type": "string"
+        }
+      }
+    },
+    "ArrayOfGroups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "groups",
+        "group2",
+        "group3"
+      ]
+    },
+    "ArrayOfLogins": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "ArrayOfSymGroups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "index": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "ArrayOfOnlineUsers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "integer"
+          },
+          "ip": {
+            "type": "integer"
+          },
+          "group": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ArrayOfSymbols": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "spread": {
+            "type": "integer"
+          },
+          "symgroup_index": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "ArrayOfTrades": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "integer"
+          },
+          "symbol": {
+            "type": "string",
+            "example": "EURUSD"
+          },
+          "state": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "integer"
+          },
+          "type_str": {
+            "type": "string",
+            "example": "sell"
+          },
+          "ticket": {
+            "type": "integer"
+          },
+          "login": {
+            "type": "integer"
+          },
+          "profit": {
+            "type": "number",
+            "example": 10000
+          },
+          "digits": {
+            "type": "integer"
+          },
+          "sl": {
+            "type": "number"
+          },
+          "tp": {
+            "type": "number"
+          },
+          "pips": {
+            "type": "number"
+          },
+          "volume": {
+            "type": "integer"
+          },
+          "lots": {
+            "type": "number"
+          },
+          "swap": {
+            "type": "number"
+          },
+          "commission": {
+            "type": "number"
+          },
+          "open_price": {
+            "type": "number"
+          },
+          "close_price": {
+            "type": "number"
+          },
+          "open_time": {
+            "type": "integer"
+          },
+          "close_time": {
+            "type": "integer"
+          },
+          "open_time_str": {
+            "type": "string"
+          },
+          "close_time_str": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ArrayOfJournalRecords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string",
+            "example": "Log event"
+          },
+          "time": {
+            "type": "string",
+            "example": "12.12.2000 12:12"
+          }
+        }
+      }
+    },
+    "ArrayOfUserResponses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string",
+            "example": "1@1.com"
+          },
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string",
+            "example": "added"
+          }
+        }
+      }
+    }
+  }
+}

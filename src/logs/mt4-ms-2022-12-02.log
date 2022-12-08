@@ -1,0 +1,3 @@
+[2022-12-02 09:02:23.098369] - info - MetaTrader4 Microservice trying to start at: http://host_auto_ip4:6502/v1
+[2022-12-02 09:02:23.100373] - info - Initing manager...
+[2022-12-02 09:02:25.387611] - info - Inited ds003.mt4d.eightcap.com : 528; token: 528; ping: 30 seconds

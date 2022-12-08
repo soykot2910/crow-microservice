@@ -1,0 +1,2 @@
+[2022-11-15 13:12:21.738217] - info - MetaTrader4 Microservice trying to start at: http://host_auto_ip4:6502/v1
+[2022-11-15 13:12:21.758221] - error - Access denied: attempting to add Address 'http://10.150.30.131:6502/v1'. Run as administrator to listen on an hostname other than localhost, or to listen on port 80.

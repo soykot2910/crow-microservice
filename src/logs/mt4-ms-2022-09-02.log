@@ -1,0 +1,51 @@
+[2022-09-02 04:43:08.424313] - info - MetaTrader4 Microservice trying to start at: http://host_auto_ip4:6502/v1
+[2022-09-02 04:43:08.525314] - info - MetaTrader4 Microservice is now listening for requests at: http://172.31.25.234:6502/v1
+[2022-09-02 04:43:14.242934] - info - Inited 52.196.97.216 : 214
+[2022-09-02 04:48:38.735603] - info - Inited master4.mt4.eightcap.com:443 : 214
+[2022-09-02 04:49:32.740185] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 2
+[2022-09-02 04:49:32.743177] - info - Input From: 1659312000 To:1661990400 Filter:90000699
+[2022-09-02 04:49:32.747177] - info - Found 0 journal records.
+[2022-09-02 04:49:41.101111] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 2
+[2022-09-02 04:49:41.102114] - info - Input From: 1659312000 To:1661990400 Filter:90000699
+[2022-09-02 04:50:27.420231] - info - Found 32 journal records.
+[2022-09-02 13:01:07.289030] - info - Inited 52.196.97.216 : 214
+[2022-09-02 13:01:07.519688] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 0
+[2022-09-02 13:01:07.519688] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:01:07.519688] - info - Found 0 journal records.
+[2022-09-02 13:01:07.869160] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 0
+[2022-09-02 13:01:07.884786] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:01:08.724200] - info - Found 284853 journal records.
+[2022-09-02 13:06:07.575849] - info - Inited 52.196.97.216 : 214
+[2022-09-02 13:06:07.807633] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 0
+[2022-09-02 13:06:07.807633] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:06:07.807633] - info - Found 0 journal records.
+[2022-09-02 13:06:08.077211] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 0
+[2022-09-02 13:06:08.077211] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:06:08.754844] - info - Found 284853 journal records.
+[2022-09-02 13:10:16.680177] - info - Inited 52.196.97.216 : 214
+[2022-09-02 13:10:16.910971] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 0
+[2022-09-02 13:10:16.910971] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:10:16.910971] - info - Found 0 journal records.
+[2022-09-02 13:10:17.244543] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 0
+[2022-09-02 13:10:17.244543] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:10:17.915557] - info - Found 284853 journal records.
+[2022-09-02 13:16:38.553914] - info - Inited 52.196.97.216 : 214
+[2022-09-02 13:16:38.792824] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 2
+[2022-09-02 13:16:38.792824] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:16:38.797957] - info - Found 0 journal records.
+[2022-09-02 13:16:39.078085] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 2
+[2022-09-02 13:16:39.078085] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:16:39.909390] - info - Found 256344 journal records.
+[2022-09-02 13:21:19.289299] - info - Inited master2.mt4.eightcap.com:443 : 214
+[2022-09-02 13:21:19.520599] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 2
+[2022-09-02 13:21:19.520599] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:21:19.520599] - info - Found 0 journal records.
+[2022-09-02 13:21:19.859480] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 2
+[2022-09-02 13:21:19.859480] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:21:20.624850] - info - Found 256344 journal records.
+[2022-09-02 13:23:32.167653] - info - Inited ds003.mt4d.eightcap.com : 501
+[2022-09-02 13:23:32.399748] - info - getting journal records. from: 2022.08.01 00:00; to: 2022.09.01 00:00; mode: 2
+[2022-09-02 13:23:32.576745] - info - Input From: 1659312000 To:1661990400 Filter:
+[2022-09-02 13:23:39.097809] - info - Found 278431 journal records.
+[2022-09-02 18:35:50.956757] - error - Failed to get users
+[2022-09-02 18:38:29.399815] - info - getting data for user, login: 90000737

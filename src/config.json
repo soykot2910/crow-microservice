@@ -1,0 +1,32 @@
+{
+  "server": {
+    "url": "http://host_auto_ip4:6502/v1"
+  },
+  "init": {
+    "enabled": 1,
+    "manager": {
+      "host": "ds003.mt4d.eightcap.com",
+      "login": "528",
+      "password": "jTh8san",
+      "ping_seconds": 30
+    }
+  },
+  "pump": {
+    "enabled": 1,
+    "manager": {
+      "host": "ds003.mt4d.eightcap.com",
+      "login": "528",
+      "password": "jTh8san"
+    },
+    "call_back": {
+      "enabled": 1,
+      "url": "https://webhook.site/1d59da0d-6022-48bc-97a2-2fd508f6c007",
+      "format": "json"
+    },
+    "redis": {
+      "enabled": 1,
+      "host": "127.0.0.1",
+      "port": 6379
+    }
+  }
+}

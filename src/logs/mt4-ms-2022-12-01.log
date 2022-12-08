@@ -1,0 +1,2 @@
+[2022-12-01 16:29:59.828558] - info - MetaTrader4 Microservice trying to start at: http://host_auto_ip4:6502/v1
+[2022-12-01 16:29:59.847055] - error - Address 'http://10.25.20.31:6502/v1' is already in use
